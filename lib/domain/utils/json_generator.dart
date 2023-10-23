@@ -22,7 +22,7 @@ class FilesFromExelGeneratorImpl implements FilesFromExelGenerator {
   }) async {
     final excel = Excel.decodeBytes(excelData);
     final jsonIndent = jsonIndentInSpaces ?? AppConstants.defaultJsonIndent;
-    final dartIndent = jsonIndentInSpaces ?? AppConstants.defaultJsonIndent;
+    final dartIndent = dartIndentInSpaces ?? AppConstants.defaultDartIndent;
 
     final filesToGenerate = <String, Map<String, String>>{};
     final localizationLangs = <int, String>{};
