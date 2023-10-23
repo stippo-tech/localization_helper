@@ -39,6 +39,7 @@ migrate_working_dir/
 
 # Firebase
 .firebaserc
+.firebase/
 
 # Java
 android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
