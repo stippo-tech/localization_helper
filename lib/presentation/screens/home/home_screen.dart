@@ -66,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                       state.file?.name ?? '',
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
+                    const SizedBox(width: 24),
                     TextButton(
                       onPressed: () => _bloc.add(HomeUploadFilePressed()),
                       child: Text(
@@ -80,15 +81,23 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 _IndentSetting(
+                  name: 'Dart file name',
+                  value: state.dartFileName,
+                  exceptionText: null,
+                  onChanged: (value) =>
+                      _bloc.add(HomeDartFileNameChanged(value)),
+                ),
+                const SizedBox(height: 8),
+                _IndentSetting(
                   name: 'Dart file indent',
-                  value: state.dartIndent,
+                  value: state.dartIndent.toString(),
                   exceptionText: state.dartException,
                   onChanged: (value) => _bloc.add(HomeDartIndentChanged(value)),
                 ),
                 const SizedBox(height: 8),
                 _IndentSetting(
                   name: 'Json file indent',
-                  value: state.jsonIndent,
+                  value: state.jsonIndent.toString(),
                   exceptionText: state.jsonException,
                   onChanged: (value) => _bloc.add(HomeJsonIndentChanged(value)),
                 ),

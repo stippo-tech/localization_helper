@@ -3,27 +3,23 @@ import 'dart:typed_data';
 
 import 'package:excel/excel.dart';
 import 'package:localization_helper/domain/app_constants.dart';
+import 'package:localization_helper/domain/model/generation_parameters.dart';
 import 'package:localization_helper/domain/model/text_file.dart';
 
 abstract interface class FilesFromExelGenerator {
   Future<List<TextFile>> generateFiles(
-    Uint8List data, {
-    int? jsonIndentInSpaces,
-    int? dartIndentInSpaces,
-  });
+    Uint8List data,
+    GenerationParameters parameters,
+  );
 }
 
 class FilesFromExelGeneratorImpl implements FilesFromExelGenerator {
   @override
   Future<List<TextFile>> generateFiles(
-    Uint8List excelData, {
-    int? jsonIndentInSpaces,
-    int? dartIndentInSpaces,
-  }) async {
+    Uint8List excelData,
+    GenerationParameters parameters,
+  ) async {
     final excel = Excel.decodeBytes(excelData);
-    final jsonIndent = jsonIndentInSpaces ?? AppConstants.defaultJsonIndent;
-    final dartIndent = dartIndentInSpaces ?? AppConstants.defaultDartIndent;
-
     final filesToGenerate = <String, Map<String, String>>{};
     final localizationLangs = <int, String>{};
 
@@ -52,7 +48,8 @@ class FilesFromExelGeneratorImpl implements FilesFromExelGenerator {
 
     final textFiles = <TextFile>[];
 
-    final jsonEncoder = JsonEncoder.withIndent(' ' * jsonIndent);
+    final jsonEncoder =
+        JsonEncoder.withIndent(' ' * parameters.jsonIndentInSpaces);
 
     // Add .json files
     textFiles.addAll(filesToGenerate.entries.map(
@@ -65,11 +62,13 @@ class FilesFromExelGeneratorImpl implements FilesFromExelGenerator {
 
     // Add .dart file
     textFiles.add(TextFile(
-      name: 'language_constants',
+      name: parameters.dartFileName.isNotEmpty
+          ? parameters.dartFileName
+          : AppConstants.defaultDartFileName,
       ext: 'dart',
       text: '''
 class L {
-${stringsKeysAndValues.entries.map((e) => '${' ' * dartIndent}static const ${e.key} = "${e.value}";').join('\n')}
+${stringsKeysAndValues.entries.map((e) => '${' ' * parameters.dartIndentInSpaces}static const ${e.key} = "${e.value}";').join('\n')}
 }
 ''',
     ));

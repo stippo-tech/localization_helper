@@ -18,3 +18,9 @@ class HomeJsonIndentChanged implements HomeEvent {
 
   HomeJsonIndentChanged(this.value);
 }
+
+class HomeDartFileNameChanged implements HomeEvent {
+  final String value;
+
+  HomeDartFileNameChanged(this.value);
+}

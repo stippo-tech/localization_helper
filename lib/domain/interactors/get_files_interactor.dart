@@ -1,14 +1,14 @@
 import 'package:localization_helper/domain/model/file.dart';
+import 'package:localization_helper/domain/model/generation_parameters.dart';
 import 'package:localization_helper/domain/model/text_file.dart';
 import 'package:localization_helper/domain/services/file_picker.dart';
 import 'package:localization_helper/domain/utils/json_generator.dart';
 
 abstract interface class GetFilesInteractor {
   Future<void> getFiles(
-    File data, {
-    int? jsonIndentInSpaces,
-    int? dartIndentInSpaces,
-  });
+    File data,
+    GenerationParameters parameters,
+  );
 }
 
 class GetFilesInteractorImpl implements GetFilesInteractor {
@@ -22,15 +22,13 @@ class GetFilesInteractorImpl implements GetFilesInteractor {
 
   @override
   Future<void> getFiles(
-    File data, {
-    int? jsonIndentInSpaces,
-    int? dartIndentInSpaces,
-  }) async {
+    File data,
+    GenerationParameters parameters,
+  ) async {
     var files = <TextFile>[];
     files = await _jsonGenerator.generateFiles(
       data.bytes,
-      jsonIndentInSpaces: jsonIndentInSpaces,
-      dartIndentInSpaces: dartIndentInSpaces,
+      parameters,
     );
 
     _fileManager.saveFilesInOneArchive(files);

@@ -9,7 +9,7 @@ class _IndentSetting extends StatefulWidget {
   });
 
   final String name;
-  final int? value;
+  final String? value;
   final void Function(String value) onChanged;
   final String? exceptionText;
 
@@ -47,7 +47,7 @@ class _IndentSettingState extends State<_IndentSetting> {
             ),
             const SizedBox(width: 44),
             SizedBox(
-              width: 60,
+              width: 160,
               child: TextField(
                 controller: _controller,
               ),

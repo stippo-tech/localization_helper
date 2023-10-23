@@ -5,6 +5,7 @@ import 'package:localization_helper/domain/app_constants.dart';
 import 'package:localization_helper/domain/interactors/get_files_interactor.dart';
 import 'package:localization_helper/domain/interactors/pick_file_interactor.dart';
 import 'package:localization_helper/domain/model/file.dart';
+import 'package:localization_helper/domain/model/generation_parameters.dart';
 
 part 'home_state.dart';
 part 'home_event.dart';
@@ -26,8 +27,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (file != null) {
         _getFilesInteractor.getFiles(
           file,
-          dartIndentInSpaces: state.dartIndent,
-          jsonIndentInSpaces: state.jsonIndent,
+          GenerationParameters.fromUserData(
+            jsonIndentInSpaces: state.jsonIndent,
+            dartIndentInSpaces: state.dartIndent,
+            dartFileName: state.dartFileName,
+          ),
         );
       }
     });
@@ -43,12 +47,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeJsonIndentChanged>((event, emit) {
       final value = int.tryParse(event.value);
       emit(state.copyWith(
-        dartIndent: value,
-        dartException: value == null
+        jsonIndent: value,
+        jsonException: value == null
             ? 'Json indent value not selected or incorrect. Default value will be used: ${AppConstants.defaultJsonIndent}'
             : null,
       ));
-      emit(state.copyWith(jsonIndent: value));
+    });
+    on<HomeDartFileNameChanged>((event, emit) {
+      emit(state.copyWith(dartFileName: event.value));
     });
   }
 }
