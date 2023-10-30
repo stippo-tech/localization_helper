@@ -1,9 +1,9 @@
 import 'package:archive/archive.dart';
+import 'package:file_picker/file_picker.dart' as file_picker;
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:localization_helper/domain/model/file.dart';
 import 'package:localization_helper/domain/services/file_picker.dart';
-import 'package:file_picker/file_picker.dart' as file_picker;
 
 final class FileManagerImpl implements FileManager {
   final _picker = file_picker.FilePicker.platform;
